@@ -172,6 +172,37 @@
                         </div>
                         <div class="card">
                             <div class="card-header">
+                                <h5 class="card-title mb-0">Login Credentials</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label" for="login_username">Login Username<span class="text-danger">*</span></label>
+                                        <input type="text" name="login_username" id="login_username" class="form-control" placeholder="Ex:- crusher@user">
+                                        <span id="login_username_error" class="error text-danger"></span>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label" for="login_password">Login Password<span class="text-danger">*</span></label>
+                                        <input type="password" name="login_password" id="login_password" class="form-control" placeholder="Enter Login Password">
+                                        <span id="login_password_error" class="error text-danger"></span>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label" for="login_role">Role<span class="text-danger">*</span></label>
+                                        <select class="form-control mb-3" name="login_role" id="login_role">
+                                            @if(!empty($role))
+                                            <option value="{{ $role->id }}" selected>{{ $role->name }}</option>
+                                            @endif
+                                        </select>
+                                        <span id="login_role_error" class="error text-danger"></span>
+                                    </div>
+                                </div>
+                                <div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
                                 <h5 class="card-title mb-0">Crusher Details</h5>
                             </div>
                             <div class="card-body">
@@ -211,7 +242,7 @@
                                     </div>
                                     <div class="col-md-3 mb-3">
                                         <label class="form-label" for="crusher_gst"><span class="change_text">Crusher</span> Upload GST</label>
-                                        <input type="file" name="crusher_gst" id="crusher_gst" class="form-control" >
+                                        <input type="file" name="crusher_gst" id="crusher_gst" class="form-control">
                                     </div>
 
                                     <div class="col-md-3 mb-3">
@@ -254,7 +285,7 @@
                                         <label class="form-label" for="crusher_udyog_aadhar"><span class="change_text">Crusher</span> Upload Udyog Aadhaar</label>
                                         <input type="file" name="crusher_udyog_aadhar" id="crusher_udyog_aadhar" class="form-control">
                                     </div>
-                                    
+
                                     <div class="col-md-3 mb-3">
                                         <label class="form-label" for="state">State<span class="error_lable text-danger">*</span></label>
                                         <select name="state" id="state" class="form-control" onchange="get_city(this.value)">
@@ -487,11 +518,12 @@
 
 <script>
     change_type('Crusher');
+
     function change_type(val) {
         if (val == 'Stock') {
             $('.change_text').text('Stock');
             $('.hide_div').hide();
-        }else{
+        } else {
             $('.change_text').text('Crusher');
             $('.hide_div').show();
         }

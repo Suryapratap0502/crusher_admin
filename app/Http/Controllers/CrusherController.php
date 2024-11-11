@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 ini_set('memory_limit', '1024M');
 
+use App\Models\AuthModel;
 use App\Models\CrusherZoneModel;
 use App\Models\DeliveyChargesModel;
+use App\Models\RoleModel;
 use App\Models\StateModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -21,6 +23,7 @@ class CrusherController extends Controller
     public function add_from(Request $request)
     {
         $data['state'] = StateModel::all();
+        $data['role'] = RoleModel::where('name','Zone Admin')->orWhere('name','Zone')->orWhere('id','2')->first();
         return view('admin/crusher/add_form', $data);
     }
 
@@ -29,6 +32,8 @@ class CrusherController extends Controller
         $validate = Validator::make($request->all(), [
             'owner_name' => 'required',
             'owner_email' => 'required|email',
+            'login_username' => 'required',
+            'login_password' => 'required',
             'owner_contact' => 'required|regex:/^(\+?\d{1,3}[- ]?)?\d{10}$/',
             'pan' => 'required',
             'aadhar_no' => 'required',
@@ -185,6 +190,14 @@ class CrusherController extends Controller
                 $insert_data = CrusherZoneModel::insert($data);
 
                 if ($insert_data) {
+
+                    $login_data['name'] = $request->crusher_name;
+                    $login_data['username'] = $request->login_username;
+                    $login_data['email'] = $request->owner_email;
+                    $login_data['password'] = $request->login_password;
+                    $login_data['role'] = $request->login_role;
+                    AuthModel::insert($login_data);
+
                     return response()->json(['code' => 200, 'message' => 'Crusher Zone Added']);
                 } else {
                     return response()->json(['code' => 400, 'message' => 'Check Server Connection']);
