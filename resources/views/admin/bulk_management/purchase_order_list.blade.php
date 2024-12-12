@@ -104,7 +104,7 @@
                                                         </li>
 
                                                         <li>
-                                                            <a href="{{ url('crusher_zones/view/' . $value->id) }}" class="dropdown-item remove-item-btn">
+                                                            <a href="{{ url('bulk_management/submit_n_preview/view/' . $value->purchase_order_id) }}" class="dropdown-item remove-item-btn">
                                                                 <i class="ri-eye-fill align-bottom me-2 text-muted"></i> View
                                                             </a>
                                                         </li>

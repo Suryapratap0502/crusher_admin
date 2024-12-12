@@ -87,7 +87,7 @@
             </div>
             <!-- end page title -->
 
-            <form id="add_company" method="post" autocomplete="off">
+            <form id="create_purchase_order" method="post" autocomplete="off">
                 @csrf()
                 <div class="row">
                     <div class="col-lg-12">
@@ -96,24 +96,25 @@
                                 <h5 class="card-title mb-0">Product Details</h5>
                             </div>
                             <div class="card-body">
+                                <div id="response"></div>
                                 <div class="row">
                                     <div class="col-md-3 mb-3">
                                         <label class="form-label" for="purchase_order_id">Purchase Order ID<span class="error_lable text-danger">*</span></label>
-                                        <input type="text" name="purchase_order_id" id="purchase_order_id" class="form-control" value="{{ $order_id }}" disabled>
+                                        <input type="text" name="purchase_order_id" id="purchase_order_id" class="form-control" value="{{ $order_id }}" readonly>
                                         <span id="purchase_order_id_error" class="error"></span>
                                     </div>
                                     <div class="col-md-3 mb-3">
                                         <label class="form-label" for="company">Company<span class="text-danger">*</span></label>
-                                        <select class="form-control mb-3" name="company" id="company">
+                                        <select class="form-control mb-3" name="company" id="company" onchange="get_company_address(this.value)">
                                             <option value="" selected>Select Company</option>
-                                            <option value="Maisha Infotech">Maisha Infotech</option>
+                                            <option value="1">Maisha Infotech</option>
                                         </select>
                                         <span id="company_error" class="error text-danger"></span>
                                     </div>
 
                                     <div class="col-md-3 mb-3">
                                         <label class="form-label" for="order_date">Order Date & Time<span class="error_lable text-danger">*</span></label>
-                                        <input type="text" name="order_date" id="order_date" class="form-control" value="{{ $order_date }}" disabled>
+                                        <input type="text" name="order_date" id="order_date" class="form-control" value="{{ $order_date }}" readonly>
                                         <span id="order_date_error" class="error"></span>
                                     </div>
                                     <div class="col-md-3 mb-3">
@@ -210,23 +211,13 @@
                                         </div>
                                     </div>
                                     <div class="row gy-3">
-                                        <div class="col-lg-4 col-sm-6">
-                                            <div class="form-check card-radio">
-                                                <input id="shippingAddress01" name="shippingAddress" type="radio" class="form-check-input" checked="">
-                                                <label class="form-check-label bg-transparent" for="shippingAddress01">
-                                                    <span class="mb-4 fw-semibold d-block text-muted text-uppercase">Office Address 1</span>
-
-                                                    <span class="fs-14 mb-2 d-block">Marcus Alfaro</span>
-                                                    <span class="text-muted fw-normal text-wrap mb-1 d-block">4739 Bubby Drive Austin, TX 78729</span>
-                                                    <span class="text-muted fw-normal d-block">Mo. 012-345-6789</span>
-                                                </label>
-                                            </div>
-                                            <div class="d-flex align-items-center flex-wrap p-2 py-1 bg-light rounded-bottom border mt-n1" style="justify-content: space-between;">
-                                                <div>
-                                                    <a href="#" class="d-block text-body p-1 px-2" data-bs-toggle="modal" data-bs-target="#addAddressModal"><i class="ri-pencil-fill text-muted align-bottom me-1"></i> Edit</a>
-                                                </div>
-                                                <div>
-                                                    <a href="#" class="d-block text-body p-1 px-2" data-bs-toggle="modal" data-bs-target="#removeItemModal"><i class="ri-delete-bin-fill text-muted align-bottom me-1"></i> Remove</a>
+                                        <div id="all_address">
+                                            <div class="col-lg-12 col-sm-6">
+                                                <div class="card ribbon-box border shadow-none mb-lg-0">
+                                                    <div class="card-body text-muted">
+                                                        <div class="ribbon-two ribbon-two-danger"><span>No Address</span></div>
+                                                        <p class="mb-2">Please select compnay for getting address</p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -275,18 +266,19 @@
                                     <div class="tab-pane fade active show" id="pills-payment" role="tabpanel" aria-labelledby="pills-payment-tab">
                                         <div class="row g-4">
                                             <div class="col-lg-4 col-sm-6">
-                                                <div data-bs-toggle="collapse" data-bs-target="#paymentmethodCollapse.show" aria-expanded="true" aria-controls="paymentmethodCollapse">
+                                                <div class="tab_val_1" data-bs-toggle="collapse" data-tab="1" data-bs-target="#paymentmethodCollapse_razorpe" aria-expanded="true" aria-controls="paymentmethodCollapse_razorpe">
                                                     <div class="form-check card-radio">
                                                         <input id="paymentMethod01" name="paymentMethod" type="radio" class="form-check-input">
                                                         <label class="form-check-label bg-transparent" for="paymentMethod01">
-                                                            <span class="fs-16 text-muted me-2"><i class="ri-paypal-fill align-bottom"></i></span>
-                                                            <span class="fs-14 text-wrap">Paypal</span>
+                                                            <span class="fs-16 text-muted me-2"><i class="ri-bank-card-fill align-bottom"></i></span>
+                                                            <span class="fs-14 text-wrap">Razorpe</span>
                                                         </label>
                                                     </div>
                                                 </div>
                                             </div>
+                                            
                                             <div class="col-lg-4 col-sm-6">
-                                                <div data-bs-toggle="collapse" data-bs-target="#paymentmethodCollapse" aria-expanded="false" aria-controls="paymentmethodCollapse" class="collapsed">
+                                                <div class="tab_val_2" data-bs-toggle="collapse" data-tab="2" data-bs-target="#paymentmethodCollapse" aria-expanded="false" aria-controls="paymentmethodCollapse" class="collapsed">
                                                     <div class="form-check card-radio">
                                                         <input id="paymentMethod02" name="paymentMethod" type="radio" class="form-check-input" checked="">
                                                         <label class="form-check-label bg-transparent" for="paymentMethod02">
@@ -298,13 +290,29 @@
                                             </div>
 
                                             <div class="col-lg-4 col-sm-6">
-                                                <div data-bs-toggle="collapse" data-bs-target="#paymentmethodCollapse.show" aria-expanded="true" aria-controls="paymentmethodCollapse">
+                                                <div class="tab_val_3" data-bs-toggle="collapse" data-tab="3" data-bs-target="#paymentmethodCollapse.show" aria-expanded="true" aria-controls="paymentmethodCollapse">
                                                     <div class="form-check card-radio">
                                                         <input id="paymentMethod03" name="paymentMethod" type="radio" class="form-check-input">
                                                         <label class="form-check-label bg-transparent" for="paymentMethod03">
-                                                            <span class="fs-16 text-muted me-2"><i class="ri-money-dollar-box-fill align-bottom"></i></span>
+                                                            <span class="fs-16 text-muted me-2"><i class="ri-hand-coin-fill align-bottom"></i></span>
                                                             <span class="fs-14 text-wrap">Cash on Delivery</span>
                                                         </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="collapse" id="paymentmethodCollapse_razorpe">
+                                            <div class="card p-4 border shadow-none mb-0 mt-4">
+                                                <div class="row gy-3">
+                                                    <div class="col-md-12 ">
+                                                        <label for="cc-name" class="form-label">Razorpe Amount</label>
+                                                        <input type="text" class="form-control" id="razorpe_submitted_amount" name="razorpe_submitted_amount" placeholder="Enter Amount">
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label for="amount_reciept" class="form-label">Amount Reciept</label>
+                                                        <input type="file" class="form-control dropify" id="razorpe_amount_reciept" name="razorpe_amount_reciept" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -313,41 +321,37 @@
                                         <div class="collapse" id="paymentmethodCollapse">
                                             <div class="card p-4 border shadow-none mb-0 mt-4">
                                                 <div class="row gy-3">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-12 ">
                                                         <label for="cc-name" class="form-label">Amount</label>
                                                         <input type="text" class="form-control" id="submitted_amount" name="submitted_amount" placeholder="Enter Amount">
                                                     </div>
 
                                                     <div class="col-md-6">
-                                                        <label for="cc-name" class="form-label">Pending Amount</label>
-                                                        <input type="text" class="form-control" id="pending_amount" name="pending_amount" placeholder="Enter Pending Amount">
-                                                    </div>
-
-                                                    <div class="col-md-6">
                                                         <label for="amount_reciept" class="form-label">Amount Reciept</label>
-                                                        <input type="file" class="form-control dropify" id="amount_reciept" name="amount_reciept" />
+                                                        <input type="file" class="form-control dropify" id="bank_amount_reciept" name="bank_amount_reciept" />
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- end tab pane -->
-
                                 </div>
                             </div>
                             <div>
                             </div>
                         </div>
                     </div>
-
+                    <input type="hidden" id="selectedPaymentMethod" name="selectedPaymentMethod" value="">
+                    <input type="hidden" id="selectedShippingAddress" name="selectedShippingAddress" value="">
+                    <input type="hidden" id="total_price" name="total_price" value="">
+                    <input type="hidden" id="selectedShippingMethod" name="selectedShippingMethod" value="">
                     <div class="text-end mb-3">
-                        <input type="button" class="btn btn-primary w-sm" onclick="check_details()" value="Submit  Preview Order Details" name="submit">
+                        <!-- onclick="check_details()" -->
+                        <input type="submit" class="btn btn-primary w-sm" value="Submit  Preview Order Details" name="submit">
                     </div>
                 </div>
         </div>
         </form>
     </div>
-    <!-- container-fluid -->
 </div>
 </div>
 
@@ -383,8 +387,8 @@
                     </div>
                     <div class="col-md-12">
                         <div class="mb-3">
-                            <label for="crusher_search_cordinates" class="form-label">Address</label>
-                            <textarea type="text" name="crusher_search_cordinates" id="crusher_search_cordinates" class="form-control" placeholder="Search Address"></textarea>
+                            <label for="company_search_cordinates" class="form-label">Address</label>
+                            <textarea type="text" name="company_search_cordinates" id="company_search_cordinates" class="form-control" placeholder="Search Address"></textarea>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
@@ -436,13 +440,12 @@
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-success">Save</button>
             </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+        </div>
+    </div>
 </div>
 
 
 @include('admin/includes/footer');
-
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2KE5mhINTL3jm_2rDDKgp5O3yZjSOP2U&libraries=places"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js" integrity="sha512-8QFTrG0oeOiyWo/VM9Y8kgxdlCryqhIxVeRpWSezdRRAvarxVtwLnGroJgnVW9/XBRduxO/z1GblzPrMQoeuew==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -480,7 +483,7 @@
         });
         geocoder = new google.maps.Geocoder();
 
-        const input = document.getElementById('crusher_search_cordinates');
+        const input = document.getElementById('company_search_cordinates');
         const autocomplete = new google.maps.places.Autocomplete(input);
         autocomplete.bindTo('bounds', map);
 
@@ -536,7 +539,7 @@
         }, (results, status) => {
             if (status === "OK") {
                 if (results[0]) {
-                    document.getElementById('crusher_search_cordinates').value = results[0].formatted_address;
+                    document.getElementById('company_search_cordinates').value = results[0].formatted_address;
                 } else {
                     console.error("No results found");
                 }
@@ -622,12 +625,48 @@
             });
         }
         $('#total_amount').text(totalAmount.toFixed(2));
+        $('#total_price').val(totalAmount.toFixed(2));
     }
 </script>
 
 <script>
-    function check_details()
-    {
+    function check_details() {
         window.location.href = "{{ url('bulk_management/submit_n_preview') }}";
     }
+
+    function get_company_address(val) {
+        $.ajax({
+            url: "{{ url('bulk_management/get_company_address') }}",
+            type: 'post',
+            data: {
+                val: val
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                $('#all_address').html(response)
+            }
+        })
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const paymentMethods = document.querySelectorAll('input[name="paymentMethod"]');
+        paymentMethods.forEach(method => {
+            method.addEventListener('change', function() {
+                document.getElementById('selectedPaymentMethod').value = this.id;
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const shippingMethods = document.querySelectorAll('input[name="shippingMethod"]');
+        shippingMethods.forEach(method => {
+            method.addEventListener('change', function() {
+                document.getElementById('selectedShippingMethod').value = this.id;
+            });
+        });
+    });
 </script>

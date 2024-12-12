@@ -76,8 +76,8 @@ class ZoneProductController extends Controller
     public function get_products_data(Request $request)
     {
         $crusher_zone_id = $request->val;
-        $data['data_for_update'] = ProductModel::where('crusher_zone',$crusher_zone_id)->get();
-        return view('admin/product/product_price_data',$data);
+        $data['data_for_update'] = ProductModel::where('crusher_zone', $crusher_zone_id)->get();
+        return view('admin/product/product_price_data', $data);
     }
 
     public function update_pro_price(Request $request)
@@ -85,13 +85,13 @@ class ZoneProductController extends Controller
         $id = $request->id;
         $data['product_price'] = $request->price;
         // $data['in_stock'] = $request->inStock;
-        $get_zone_id = ProductModel::where('id',$id)->first();
+        $get_zone_id = ProductModel::where('id', $id)->first();
         $log['zone_id'] = $get_zone_id->crusher_zone;
         $log['product_id'] = $id;
         $log['in_stock'] = $request->inStock;
         $log['price'] = $request->price;
         $log['updated_by'] = getuserdetail('id');
-        
+
         PriceUpdateLog::insert($log);
         $update_data = ProductModel::where('id', $id)->update($data);
         if ($update_data) {
@@ -104,6 +104,37 @@ class ZoneProductController extends Controller
     public function get_latest_log()
     {
         $data['log'] = PriceUpdateLog::get();
-        return view('admin/product/updated_log_list',$data); 
+        return view('admin/product/updated_log_list', $data);
+    }
+
+    public function edit(Request $request)
+    {
+        $id = $request->id;
+        $data['product_data'] = ProductModel::where('id', $id)->first();
+        $data['category_list'] = ProductCategoryModel::where('flag', '!=', '2')->get();
+        return view('admin/product/edit', $data);
+    }
+
+    public function update(Request $request)
+    {
+        $id = $request->id;
+        if (getuserdetail('id') == 1) {
+            $data['added_by'] = 1;
+            $data['crusher_zone'] = $request->cursher_zone;
+        } else {
+            $data['added_by'] = getuserdetail('id');
+            $data['crusher_zone'] = getuserdetail('id');
+        }
+        $data['product_cat'] = $request->product_category;
+        $data['product_name'] = $request->product_name;
+        $data['product_size'] = $request->product_size;
+        $data['product_price'] = $request->product_price;
+        $data['flag'] = $request->status;
+        $update_data = ProductModel::where('id', $id)->update($data);
+        if ($update_data) {
+            return response()->json(['code' => 200, 'message' => 'Product Updated']);
+        } else {
+            return response()->json(['code' => 400, 'message' => 'Check Server Connection']);
+        }
     }
 }

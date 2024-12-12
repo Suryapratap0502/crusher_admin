@@ -101,7 +101,7 @@
                                                         <i class="ri-more-fill align-middle"></i>
                                                     </button>
                                                     <ul class="dropdown-menu dropdown-menu-end">
-                                                        <li><a href="#" data-bs-toggle="modal" data-bs-target="#edit" onclick="edit('{{$value->id}}','role/edit');" class="dropdown-item edit-item-btn"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit</a></li>
+                                                        <li><a href="#" data-bs-toggle="modal" data-bs-target="#edit" onclick="edit('{{$value->id}}','product/edit');" class="dropdown-item edit-item-btn"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit</a></li>
                                                         <li>
                                                             <a href="#" class="dropdown-item remove-item-btn" onclick="action_data('{{$value->id}}','product','delete','zone_products');">
                                                                 <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i> Delete
@@ -239,11 +239,11 @@
 
                             <!-- Modal -->
                             <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="edit" tabindex="-1" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div id="response_edit"></div>
                                         <div class="modal-header bg-light p-3">
-                                            <h5 class="modal-title" id="exampleModalLabel">Edit Role</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel">Edit Product</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
                                         </div>
                                         <div class="modal-body" id="edit_data">

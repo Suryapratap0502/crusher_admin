@@ -97,14 +97,12 @@
                                             <img src="{{ asset('assets/images/logo_dark.png')}}" class="card-logo card-logo-light" alt="logo light" height="50">
                                             <div class="mt-sm-5 mt-4">
                                                 <h6 class="text-muted text-uppercase fw-semibold">Address</h6>
-                                                <p class="text-muted mb-1" id="address-details">California, United States</p>
-                                                <p class="text-muted mb-0" id="zip-code"><span>Zip-code:</span> 90201</p>
+                                                <p class="text-muted mb-1" id="address-details">{{ $order_data->shipping_details }}</p>
                                             </div>
                                         </div>
                                         <div class="flex-shrink-0 mt-sm-0 mt-3">
-                                            <h6><span class="text-muted fw-normal">Legal Registration No:</span><span id="legal-register-no">987654</span></h6>
-                                            <h6><span class="text-muted fw-normal">Email:</span><span id="email">velzon@themesbrand.com</span></h6>
-                                            <h6><span class="text-muted fw-normal">Website:</span> <a href="https://themesbrand.com/" class="link-primary" target="_blank" id="website">www.themesbrand.com</a></h6>
+                                            <h6><span class="text-muted fw-normal">Email:</span><span id="email">support@aggzon.com</span></h6>
+                                            <h6><span class="text-muted fw-normal">Website:</span> <a href="https://aggzon.micodetest.com/" class="link-primary" target="_blank" id="website">www.aggzon.com</a></h6>
                                             <h6 class="mb-0"><span class="text-muted fw-normal">Contact No: </span><span id="contact-no"> +(01) 234 6789</span></h6>
                                         </div>
                                     </div>
@@ -116,22 +114,22 @@
                                     <div class="row g-3">
                                         <div class="col-lg-3 col-6">
                                             <p class="text-muted mb-2 text-uppercase fw-semibold">Order ID</p>
-                                            <h5 class="fs-14 mb-0">#VL<span id="invoice-no">25000355</span></h5>
+                                            <h5 class="fs-14 mb-0">#<span id="invoice-no">{{ $order_data->purchase_order_id }}</span></h5>
                                         </div>
                                         <!--end col-->
                                         <div class="col-lg-3 col-6">
                                             <p class="text-muted mb-2 text-uppercase fw-semibold">Order Date</p>
-                                            <h5 class="fs-14 mb-0"><span id="invoice-date">23 Nov, 2021</span> <small class="text-muted" id="invoice-time">02:36PM</small></h5>
+                                            <h5 class="fs-14 mb-0"><span id="invoice-date">{{ $order_data->order_date }}</span></h5>
                                         </div>
                                         <!--end col-->
                                         <div class="col-lg-3 col-6">
                                             <p class="text-muted mb-2 text-uppercase fw-semibold">Payment Status</p>
-                                            <span class="badge bg-success-subtle text-success fs-11" id="payment-status">Paid</span>
+                                            <span class="badge bg-success-subtle text-success fs-11" id="payment-status">{{ $order_data->payment_statue }}</span>
                                         </div>
                                         <!--end col-->
                                         <div class="col-lg-3 col-6">
                                             <p class="text-muted mb-2 text-uppercase fw-semibold">Total Amount</p>
-                                            <h5 class="fs-14 mb-0">₹ <span id="total-amount">755.96</span></h5>
+                                            <h5 class="fs-14 mb-0">₹ <span id="total-amount">{{ $order_data->total_price }} /-</span></h5>
                                         </div>
                                         <!--end col-->
                                     </div>
@@ -144,17 +142,24 @@
                                     <div class="row g-3">
                                         <div class="col-6">
                                             <h6 class="text-muted text-uppercase fw-semibold mb-3">Billing Address</h6>
-                                            <p class="fw-medium mb-2" id="billing-name">David Nichols</p>
-                                            <p class="text-muted mb-1" id="billing-address-line-1">305 S San Gabriel Blvd</p>
-                                            <p class="text-muted mb-1"><span>Phone: +</span><span id="billing-phone-no">(123) 456-7890</span></p>
-                                            <p class="text-muted mb-0"><span>Tax: </span><span id="billing-tax-no">12-3456789</span> </p>
+                                            @php
+                                            $get_biling_address = App\Models\CompanyAddressModel::where('company_id', $order_data->company_id)->where('address_status','Primary')->first();
+                                            $get_company_name = App\Models\CompanyModel::where('id', $order_data->company_id)->first();
+
+                                            @endphp
+                                            @if(!empty($get_biling_address))
+                                            <p class="fw-medium mb-2" id="billing-name">{{ $get_company_name->company_name ?? 'AggZon' }}</p>
+                                            <p class="text-muted mb-1" id="billing-address-line-1">{{ $get_biling_address->address ?? 'NA' }}</p>
+                                            <p class="text-muted mb-1"><span>Phone: +</span><span id="billing-phone-no">{{ $get_biling_address->contact ?? 'NA' }}</span></p>
+                                            <p class="text-muted mb-0"><span>GST No: </span><span id="billing-tax-no">{{ $get_company_name->gstin ?? 'NA' }}</span> </p>
+                                            @endif
                                         </div>
                                         <!--end col-->
                                         <div class="col-6">
                                             <h6 class="text-muted text-uppercase fw-semibold mb-3">Shipping Address</h6>
-                                            <p class="fw-medium mb-2" id="shipping-name">David Nichols</p>
-                                            <p class="text-muted mb-1" id="shipping-address-line-1">305 S San Gabriel Blvd</p>
-                                            <p class="text-muted mb-1"><span>Phone: +</span><span id="shipping-phone-no">(123) 456-7890</span></p>
+                                            <p class="fw-medium mb-2" id="shipping-name">{{ $get_company_name->company_name ?? 'AggZon' }}</p>
+                                            <p class="text-muted mb-1" id="shipping-address-line-1">{{ $order_data->shipping_details }}</p>
+                                            <p class="text-muted mb-1"><span>Phone: +91</span><span id="shipping-phone-no">{{ $order_data->order_by_contact }}</span></p>
                                         </div>
                                         <!--end col-->
                                     </div>
@@ -176,51 +181,32 @@
                                                 </tr>
                                             </thead>
                                             <tbody id="products-list">
+                                                @php
+                                                $products = json_decode($order_data->product_details);
+                                                if (!is_array($products)) {
+                                                $products = [$products];
+                                                }
+                                                @endphp
+                                                @foreach ($products as $index => $product)
                                                 <tr>
-                                                    <th scope="row">01</th>
+                                                    <th scope="row">{{ $index + 1 }}</th>
                                                     <td class="text-start">
-                                                        <span class="fw-medium">10 MM (MM)</span>
+                                                        <span class="fw-medium">{{ $product->name ?? 'N/A' }} ({{ strtoupper($product->uom ?? 'N/A') }})</span>
                                                     </td>
-                                                    <td>₹ 119.99</td>
-                                                    <td>02</td>
-                                                    <td class="text-end">₹ 239.98</td>
+                                                    <td>₹ {{ number_format($product->price ?? 0, 2) }}</td>
+                                                    <td>{{ $product->quantity ?? 0 }}</td>
+                                                    <td class="text-end">₹ {{ number_format(($product->price ?? 0) * ($product->quantity ?? 0), 2) }}</td>
                                                 </tr>
-                                                <tr>
-                                                    <th scope="row">02</th>
-                                                    <td class="text-start">
-                                                        <span class="fw-medium">10 MM (MM)</span>
-                                                    </td>
-                                                    <td>₹ 94.99</td>
-                                                    <td>01</td>
-                                                    <td class="text-end">₹ 94.99</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">03</th>
-                                                    <td class="text-start">
-                                                        <span class="fw-medium">10 MM (MM)</span>
-                                                    </td>
-                                                    <td>₹ 24.99</td>
-                                                    <td>01</td>
-                                                    <td class="text-end">₹ 24.99</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">04</th>
-                                                    <td class="text-start">
-                                                        <span class="fw-medium">10 MM (MM)</span>
-                                                    </td>
-                                                    <td>₹ 340.00</td>
-                                                    <td>01</td>
-                                                    <td class="text-end">₹ 340.00</td>
-                                                </tr>
+                                                @endforeach
                                             </tbody>
-                                        </table><!--end table-->
+                                        </table>
                                     </div>
                                     <div class="border-top border-top-dashed mt-2">
                                         <table class="table table-borderless table-nowrap align-middle mb-0 ms-auto" style="width:250px">
                                             <tbody>
                                                 <tr>
                                                     <td>Sub Total</td>
-                                                    <td class="text-end">₹ 699.96</td>
+                                                    <td class="text-end">₹ {{ number_format($order_data->total_price, 2) }}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Estimated Tax (12.5%)</td>
@@ -236,7 +222,7 @@
                                                 </tr>
                                                 <tr class="border-top border-top-dashed fs-15">
                                                     <th scope="row">Total Amount</th>
-                                                    <th class="text-end">₹ 755.96</th>
+                                                    <th class="text-end">₹ {{ number_format($order_data->total_price, 2) }}</th>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -244,10 +230,9 @@
                                     </div>
                                     <div class="mt-3">
                                         <h6 class="text-muted text-uppercase fw-semibold mb-3">Payment Details:</h6>
-                                        <p class="text-muted mb-1">Payment Method: <span class="fw-medium" id="payment-method">Mastercard</span></p>
-                                        <p class="text-muted mb-1">Card Holder: <span class="fw-medium" id="card-holder-name">David Nichols</span></p>
-                                        <p class="text-muted mb-1">Card Number: <span class="fw-medium" id="card-number">xxx xxxx xxxx 1234</span></p>
-                                        <p class="text-muted">Total Amount: <span class="fw-medium" id="">₹ </span><span id="card-total-amount">755.96</span></p>
+                                        <p class="text-muted mb-1">Payment Method: <span class="fw-medium" id="payment-method">{{ $order_data->payment_mode }}</span></p>
+                                        <p class="text-muted mb-1">Company Name: <span class="fw-medium" id="card-holder-name">{{ $get_company_name->company_name ?? 'AggZon' }}</span></p>
+                                        <p class="text-muted">Total Amount: <span class="fw-medium" id="">₹ </span><span id="card-total-amount">{{ number_format($order_data->total_price, 2) }}</span></p>
                                     </div>
                                     <div class="mt-4">
                                         <div class="alert alert-primary">
@@ -260,10 +245,16 @@
                                             </p>
                                         </div>
                                     </div>
+                                    @if($page_type != 'view' && $order_data->data_submitted == 0)
                                     <div class="hstack gap-2 justify-content-end d-print-none mt-4">
                                         <a href="#" class="btn btn-soft-primary"><i class="ri-edit-2-fill align-bottom me-1"></i> Edit</a>
                                         <a href="javascript:void(0);" class="btn btn-primary"><i class="ri-save-3-fill align-bottom me-1"></i> Create Order</a>
                                     </div>
+                                    @else
+                                    <div class="hstack gap-2 justify-content-end d-print-none mt-4">
+                                        <a href="{{ url('bulk_management/purchase_order') }}" class="btn btn-primary"><i class="ri-arrow-left-fill align-bottom me-1"></i>Go Back</a>
+                                    </div>
+                                    @endif
                                 </div>
                                 <!--end card-body-->
                             </div><!--end col-->

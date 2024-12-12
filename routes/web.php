@@ -8,6 +8,7 @@ use App\Http\Controllers\CrusherController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingController;
@@ -96,8 +97,10 @@ Route::prefix('bulk_management/')->group(function () {
     Route::get('purchase_order', [BulkController::class, 'purchase_order_list']);
     Route::get('purchase_order_form', [BulkController::class, 'purchase_order_form']);
     Route::post('get_product_data', [BulkController::class, 'get_product_data']);
-    Route::get('submit_n_preview', [BulkController::class, 'submit_n_preview']);
+    Route::get('submit_n_preview/{page_type}/{id}', [BulkController::class, 'submit_n_preview']);
     Route::post('get_detailed_data', [BulkController::class, 'get_detailed_data']);
+    Route::post('get_company_address', [BulkController::class, 'get_company_address']);
+    Route::post('create_purchase_order', [BulkController::class, 'create_purchase_order']);
 });
 
 Route::prefix('vehicle_management/')->group(function () {
@@ -126,6 +129,46 @@ Route::prefix('thirdparty_managament/')->group(function () {
 
 Route::prefix('settings/')->group(function () {
     Route::get('', [SettingController::class, 'index']);
+});
+
+Route::prefix('all_order/')->group(function () {
+    Route::get('', [OrderController::class, 'all_order']);
+});
+
+Route::prefix('pending_order/')->group(function () {
+    Route::get('', [OrderController::class, 'all_order']);
+});
+
+Route::prefix('confirm_order/')->group(function () {
+    Route::get('', [OrderController::class, 'all_order']);
+});
+
+Route::prefix('confirm_order/')->group(function () {
+    Route::get('', [OrderController::class, 'all_order']);
+});
+
+Route::prefix('packaging_order/')->group(function () {
+    Route::get('', [OrderController::class, 'all_order']);
+});
+
+Route::prefix('out_for_delivery/')->group(function () {
+    Route::get('', [OrderController::class, 'all_order']);
+});
+
+Route::prefix('delivered_order/')->group(function () {
+    Route::get('', [OrderController::class, 'all_order']);
+});
+
+Route::prefix('return_order/')->group(function () {
+    Route::get('', [OrderController::class, 'all_order']);
+});
+
+Route::prefix('failed_delivery/')->group(function () {
+    Route::get('', [OrderController::class, 'all_order']);
+});
+
+Route::prefix('cancel_order/')->group(function () {
+    Route::get('', [OrderController::class, 'all_order']);
 });
 
 // });

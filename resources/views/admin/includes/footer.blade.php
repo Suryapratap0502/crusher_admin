@@ -26,6 +26,7 @@
 <script src="{{ asset('assets/js/vehicle.js')}}"></script>
 <script src="{{ asset('assets/js/product_category.js')}}"></script>
 <script src="{{ asset('assets/js/product.js')}}"></script>
+<script src="{{ asset('assets/js/purchase_order.js')}}"></script>
 <script src="{{ asset('assets/js/common.js')}}"></script>
 <script src="{{ asset('assets/js/vendor.js')}}"></script>
 <script src="{{ asset('assets/js/customer.js')}}"></script>
